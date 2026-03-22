@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna Fuel — Eat, Move & Thrive With Your Cycle</title>
+<meta name="description" content="The AI-powered cycle nutrition and wellness app that tells you exactly what to eat, how to move, and how to feel your best — every single day of your cycle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--moon:#C9A84C;--rose:#D4537E;--sage:#1D9E75;--lavender:#9B59B6;--dark:#0D0A0F;--dark2:#150F1A;--dark3:#1E1525;--border:rgba(255,255,255,0.08);--text:#F5F0F8;--muted:#9E97A8;--font-head:'Playfair Display',serif;--font-body:'DM Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;background:rgba(13,10,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-head);font-weight:700;font-size:20px;color:var(--text)}
+.nav-logo span{color:var(--moon)}
+.nav-cta{background:linear-gradient(135deg,var(--rose),var(--moon));color:white;font-family:var(--font-body);font-weight:500;font-size:14px;padding:10px 22px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s}
+.nav-cta:hover{opacity:.9}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;overflow:hidden}
+.hero-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(212,83,126,0.1) 0%,transparent 70%);pointer-events:none}
+.hero-moon{font-size:56px;margin-bottom:1.5rem;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:6px 16px;border-radius:999px;border:1px solid rgba(212,83,126,0.4);color:var(--rose);margin-bottom:1.5rem}
+.hero h1{font-family:var(--font-head);font-size:clamp(38px,6vw,72px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem}
+.hero h1 .rose{color:var(--rose)}
+.hero h1 .moon{color:var(--moon)}
+.hero-sub{font-size:clamp(15px,2vw,19px);color:var(--muted);max-width:520px;margin:0 auto 2.5rem;font-weight:300}
+.hero-cta-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.btn-primary{background:linear-gradient(135deg,var(--rose),var(--moon));color:white;font-family:var(--font-body);font-weight:500;font-size:16px;padding:16px 36px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s;display:inline-block}
+.btn-primary:hover{opacity:.9}
+.btn-secondary{background:transparent;color:var(--text);font-family:var(--font-body);font-weight:400;font-size:16px;padding:16px 36px;border-radius:999px;border:1px solid var(--border);cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2)}
+.hero-price{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:0.5rem}
+.price-amount{font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--moon)}
+.price-label{font-size:13px;color:var(--muted)}
+.hero-trial{font-size:12px;color:var(--muted)}
+.proof-bar{background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.proof-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.pi-icon{color:var(--rose);font-size:16px}
+section{padding:6rem 2rem}
+.container{max-width:1040px;margin:0 auto}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin-bottom:1rem}
+.section-title{font-family:var(--font-head);font-size:clamp(28px,4vw,48px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1rem}
+.section-sub{font-size:17px;color:var(--muted);max-width:520px;font-weight:300;margin-bottom:3rem}
+.phases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.phase-card{border-radius:16px;padding:1.5rem;border:1px solid transparent}
+.phase-card.m{background:rgba(212,83,126,0.08);border-color:rgba(212,83,126,0.2)}
+.phase-card.f{background:rgba(55,138,221,0.08);border-color:rgba(55,138,221,0.2)}
+.phase-card.o{background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.2)}
+.phase-card.l{background:rgba(155,89,182,0.08);border-color:rgba(155,89,182,0.2)}
+.pc-emoji{font-size:28px;margin-bottom:10px}
+.pc-name{font-family:var(--font-head);font-size:17px;font-weight:600;margin-bottom:4px}
+.pc-days{font-size:12px;color:var(--muted);margin-bottom:10px}
+.pc-items{list-style:none;display:flex;flex-direction:column;gap:5px}
+.pc-items li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:6px}
+.pc-items li::before{content:'→';flex-shrink:0}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.feature-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;transition:border-color .2s}
+.feature-card:hover{border-color:rgba(212,83,126,0.3)}
+.fc-icon{font-size:26px;margin-bottom:10px}
+.fc-title{font-family:var(--font-head);font-size:17px;font-weight:600;margin-bottom:6px}
+.fc-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.pricing-card{background:var(--dark2);border:1px solid var(--border);border-radius:24px;padding:3rem;max-width:460px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--moon))}
+.pricing-moon{font-size:36px;margin-bottom:1rem}
+.pricing-name{font-family:var(--font-head);font-size:26px;font-weight:700;margin-bottom:.5rem}
+.pricing-tagline{font-size:15px;color:var(--muted);margin-bottom:2rem}
+.pricing-amount{font-family:var(--font-head);font-size:64px;font-weight:700;color:var(--moon);line-height:1;margin-bottom:.25rem}
+.pricing-period{font-size:16px;color:var(--muted);margin-bottom:.5rem}
+.pricing-trial{font-size:13px;color:var(--sage);margin-bottom:2rem;padding:6px 16px;border-radius:999px;background:rgba(29,158,117,0.1);display:inline-block}
+.pricing-features{list-style:none;text-align:left;margin-bottom:2.5rem;display:flex;flex-direction:column;gap:12px}
+.pricing-features li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text)}
+.pricing-features li::before{content:'✓';color:var(--rose);font-weight:600;flex-shrink:0}
+.btn-buy{display:block;width:100%;background:linear-gradient(135deg,var(--rose),var(--moon));color:white;font-family:var(--font-body);font-weight:500;font-size:18px;padding:18px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s;margin-bottom:1rem}
+.btn-buy:hover{opacity:.9}
+.guarantee{font-size:13px;color:var(--muted)}
+.faq-item{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px}
+.faq-q{padding:1.25rem 1.5rem;font-weight:500;font-size:16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s}
+.faq-q:hover{background:var(--dark3)}
+.faq-q .arrow{transition:transform .2s;color:var(--muted);font-size:20px;flex-shrink:0}
+.faq-q.open .arrow{transform:rotate(45deg)}
+.faq-a{padding:0 1.5rem;font-size:15px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-a.open{max-height:300px;padding:0 1.5rem 1.25rem}
+footer{background:var(--dark2);border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:13px;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--text)}
+@media(max-width:640px){nav{padding:1rem}.hero{padding:7rem 1.25rem 4rem}section{padding:4rem 1.25rem}.pricing-card{padding:2rem 1.5rem}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">🌙 Luna <span>Fuel</span></div>
+  <a href="YOUR_GUMROAD_LINK" class="nav-cta">Start free trial</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-moon">🌙</div>
+  <div class="hero-badge">AI Cycle Nutrition & Wellness</div>
+  <h1>Eat & move with<br>your <span class="rose">cycle</span>,<br>not against <span class="moon">it</span></h1>
+  <p class="hero-sub">Luna Fuel tells you exactly what to eat, how to move, and how to feel your best — every single day of your cycle. Personalized by AI, built for your body.</p>
+  <div class="hero-cta-group">
+    <a href="YOUR_GUMROAD_LINK" class="btn-primary">Start my 7-day free trial →</a>
+    <a href="#how-it-works" class="btn-secondary">See how it works</a>
+  </div>
+  <div class="hero-price">
+    <span class="price-amount">$4.99</span>
+    <span class="price-label">per month after trial</span>
+  </div>
+  <div class="hero-trial">7 days free · cancel anytime · no commitment</div>
+</section>
+
+<div class="proof-bar">
+  <div class="proof-item"><span class="pi-icon">🌙</span> 4 cycle phases tracked</div>
+  <div class="proof-item"><span class="pi-icon">🥗</span> Daily meal plans</div>
+  <div class="proof-item"><span class="pi-icon">💪</span> Phase-specific workouts</div>
+  <div class="proof-item"><span class="pi-icon">🛒</span> Weekly grocery lists</div>
+  <div class="proof-item"><span class="pi-icon">✨</span> AI wellness coach</div>
+</div>
+
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Your body changes<br>every week. Your<br>plan should too.</h2>
+    <p class="section-sub">Most apps give you the same advice every day. Luna Fuel knows where you are in your cycle and adjusts everything — food, movement, energy, and mood support — for that exact phase.</p>
+    <div class="phases-grid">
+      <div class="phase-card m">
+        <div class="pc-emoji">🌑</div>
+        <div class="pc-name" style="color:#D4537E">Menstrual</div>
+        <div class="pc-days">Days 1–5</div>
+        <ul class="pc-items">
+          <li>Iron-rich warming foods</li>
+          <li>Gentle yoga and rest</li>
+          <li>Anti-cramp recipes</li>
+          <li>Restorative self care</li>
+        </ul>
+      </div>
+      <div class="phase-card f">
+        <div class="pc-emoji">🌒</div>
+        <div class="pc-name" style="color:#378ADD">Follicular</div>
+        <div class="pc-days">Days 6–13</div>
+        <ul class="pc-items">
+          <li>Light fresh foods</li>
+          <li>Build to higher intensity</li>
+          <li>Energy-boosting meals</li>
+          <li>Start new things</li>
+        </ul>
+      </div>
+      <div class="phase-card o">
+        <div class="pc-emoji">🌕</div>
+        <div class="pc-name" style="color:#C9A84C">Ovulation</div>
+        <div class="pc-days">Days 14–16</div>
+        <ul class="pc-items">
+          <li>Anti-inflammatory foods</li>
+          <li>Peak performance training</li>
+          <li>Raw colorful meals</li>
+          <li>Your magnetic days</li>
+        </ul>
+      </div>
+      <div class="phase-card l">
+        <div class="pc-emoji">🌘</div>
+        <div class="pc-name" style="color:#9B59B6">Luteal</div>
+        <div class="pc-days">Days 17–28</div>
+        <ul class="pc-items">
+          <li>Complex carbs and magnesium</li>
+          <li>Moderate calming movement</li>
+          <li>Comfort nourishment</li>
+          <li>Wind down and restore</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything your body<br>needs, every day.</h2>
+    <div class="features-grid">
+      <div class="feature-card"><div class="fc-icon">🥗</div><div class="fc-title">Daily meal plans</div><p class="fc-desc">AI builds you a full day of meals — breakfast, lunch, dinner, and snacks — optimized for your exact cycle phase and dietary preferences.</p></div>
+      <div class="feature-card"><div class="fc-icon">💪</div><div class="fc-title">Phase-specific workouts</div><p class="fc-desc">From HIIT during your follicular peak to gentle yoga during your period — Luna knows what your body can handle and tells you exactly what to do.</p></div>
+      <div class="feature-card"><div class="fc-icon">🛒</div><div class="fc-title">Weekly grocery list</div><p class="fc-desc">One click and Luna builds your full weekly grocery list organized by category — produce, proteins, grains, and more — all aligned to your phase.</p></div>
+      <div class="feature-card"><div class="fc-icon">💊</div><div class="fc-title">Symptom soother recipes</div><p class="fc-desc">Bloating, cramps, fatigue, brain fog — tell Luna how you feel and she gives you specific foods, drinks, and remedies to help right now.</p></div>
+      <div class="feature-card"><div class="fc-icon">⚡</div><div class="fc-title">Energy and mood insights</div><p class="fc-desc">Understand why you feel the way you feel each week. Luna explains your hormones in plain language so you can stop fighting your body.</p></div>
+      <div class="feature-card"><div class="fc-icon">✨</div><div class="fc-title">Ask Luna anything</div><p class="fc-desc">Why do I crave chocolate before my period? What supplements should I take right now? Ask Luna anything and get a personalized answer for your phase.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label" style="text-align:center">Pricing</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:.5rem">Less than a coffee.<br>Every month.</h2>
+    <p style="text-align:center;color:var(--muted);font-size:16px;margin-bottom:3rem">7 days free. Then $4.99/mo. Cancel anytime.</p>
+    <div class="pricing-card">
+      <div class="pricing-moon">🌙</div>
+      <div class="pricing-name">Luna Fuel</div>
+      <div class="pricing-tagline">Your cycle wellness companion</div>
+      <div class="pricing-amount">$4.99</div>
+      <div class="pricing-period">per month · cancel anytime</div>
+      <div class="pricing-trial">✓ 7-day free trial included</div>
+      <ul class="pricing-features">
+        <li>Daily meal plans for every phase</li>
+        <li>Phase-specific workout recommendations</li>
+        <li>Weekly grocery list generator</li>
+        <li>Symptom soother recipes</li>
+        <li>Energy and mood daily insights</li>
+        <li>Ask Luna AI — unlimited questions</li>
+        <li>All 4 cycle phases tracked</li>
+        <li>Works on any device — no app download</li>
+      </ul>
+      <a href="YOUR_GUMROAD_LINK" class="btn-buy">Start my free 7-day trial →</a>
+      <p class="guarantee">Cancel anytime. No questions asked. Your first 7 days are completely free.</p>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--dark2);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title" style="margin-bottom:2.5rem">Questions answered.</h2>
+    <div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need to track my period to use this? <span class="arrow">+</span></div><div class="faq-a">You just need to know the first day of your last period. Luna calculates everything from there. No complicated tracking required.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What if my cycle is irregular? <span class="arrow">+</span></div><div class="faq-a">Luna works with any cycle length from 25 to 35 days. You can update your cycle info anytime. Even if your cycle varies, you will always know your approximate phase and get relevant guidance.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does it work for dietary restrictions? <span class="arrow">+</span></div><div class="faq-a">Yes — Luna supports vegetarian, vegan, gluten free, dairy free, and low carb. All meal plans and grocery lists are personalized to your preference.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need to download an app? <span class="arrow">+</span></div><div class="faq-a">No download needed. Luna Fuel works in your browser on your phone, tablet, or computer. You can add it to your home screen for quick access.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How does the free trial work? <span class="arrow">+</span></div><div class="faq-a">Your first 7 days are completely free. After that it is $4.99 per month. You can cancel anytime before your trial ends and you will not be charged anything.</div></div>
+    </div>
+  </div>
+</section>
+
+<section style="text-align:center;border-top:1px solid var(--border)">
+  <div class="container" style="max-width:560px">
+    <div style="font-size:48px;margin-bottom:1rem">🌙</div>
+    <div class="section-label">Ready?</div>
+    <h2 class="section-title">Your body has been<br>trying to tell you<br>something.</h2>
+    <p style="color:var(--muted);font-size:17px;margin-bottom:2.5rem;font-weight:300">Luna Fuel helps you finally listen. Eat with your cycle. Move with your cycle. Feel like yourself again — every single week.</p>
+    <a href="YOUR_GUMROAD_LINK" class="btn-primary" style="font-size:18px;padding:18px 48px">Start my free 7-day trial →</a>
+    <p style="color:var(--muted);font-size:13px;margin-top:1rem">7 days free · $4.99/mo after · cancel anytime</p>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:.5rem">© 2026 Luna Fuel · Built by <a href="https://instagram.com/mystakinfolk">@mystakinfolk</a></p>
+  <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="mailto:hello@lunafuel.co">hello@lunafuel.co</a></p>
+</footer>
+<script>
+function toggleFaq(el){
+  const ans=el.nextElementSibling,isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('open'));
+  if(!isOpen){ans.classList.add('open');el.classList.add('open')}
+}
+</script>
+</body>
+</html>

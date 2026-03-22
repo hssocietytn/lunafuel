@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna Fuel — Eat, Move & Thrive With Your Cycle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --moon:#C9A84C;
+  --rose:#D4537E;
+  --sage:#1D9E75;
+  --lavender:#9B59B6;
+  --sky:#378ADD;
+  --dark:#0D0A0F;
+  --dark2:#150F1A;
+  --dark3:#1E1525;
+  --border:rgba(255,255,255,0.08);
+  --text:#F5F0F8;
+  --muted:#9E97A8;
+  --font-head:'Playfair Display',serif;
+  --font-body:'DM Sans',sans-serif;
+}
+body{font-family:var(--font-body);background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* GATE */
+#gate{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;align-items:center;justify-content:center;padding:2rem}
+#gate.hidden{display:none}
+.gate-box{width:100%;max-width:400px;text-align:center}
+.gate-moon{font-size:48px;margin-bottom:1rem}
+.gate-logo{font-family:var(--font-head);font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px}
+.gate-logo span{color:var(--moon)}
+.gate-sub{font-size:14px;color:var(--muted);margin-bottom:2rem;font-weight:300}
+.gate-input{width:100%;padding:14px 16px;background:var(--dark2);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:var(--text);font-family:var(--font-body);font-size:18px;margin-bottom:10px;outline:none;transition:border-color .2s;text-align:center;letter-spacing:.15em}
+.gate-input:focus{border-color:var(--moon)}
+.gate-input::placeholder{color:#444;letter-spacing:0;font-size:14px}
+.gate-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--rose),var(--moon));color:white;border:none;border-radius:12px;font-family:var(--font-body);font-size:16px;font-weight:500;cursor:pointer;margin-bottom:10px}
+.gate-error{font-size:13px;color:#D85A30;min-height:18px;margin-bottom:6px}
+.gate-hint{font-size:12px;color:#444}
+.gate-hint a{color:var(--muted);text-decoration:none}
+
+/* APP LAYOUT */
+.app{max-width:960px;margin:0 auto;padding:1.5rem}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-moon{font-size:24px}
+.logo-text{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--text)}
+.logo-text span{color:var(--moon)}
+.header-right{display:flex;align-items:center;gap:12px}
+.trial-badge{font-size:11px;padding:4px 12px;border-radius:999px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--moon)}
+
+/* SETUP CARD */
+.setup-card{background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:1.75rem;margin-bottom:1.5rem}
+.setup-title{font-family:var(--font-head);font-size:18px;font-weight:600;margin-bottom:4px}
+.setup-sub{font-size:13px;color:var(--muted);margin-bottom:1.25rem}
+.setup-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1rem}
+.setup-group label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.setup-input,.setup-select{width:100%;padding:10px 14px;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s}
+.setup-input:focus,.setup-select:focus{border-color:var(--moon)}
+.setup-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--rose),var(--moon));color:white;border:none;border-radius:10px;font-family:var(--font-body);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.setup-btn:hover{opacity:.9}
+
+/* PHASE INDICATOR */
+.phase-banner{border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.phase-banner.menstrual{background:linear-gradient(135deg,rgba(212,83,126,0.15),rgba(155,89,182,0.1));border:1px solid rgba(212,83,126,0.25)}
+.phase-banner.follicular{background:linear-gradient(135deg,rgba(55,138,221,0.15),rgba(29,158,117,0.1));border:1px solid rgba(55,138,221,0.25)}
+.phase-banner.ovulation{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(212,83,126,0.1));border:1px solid rgba(201,168,76,0.25)}
+.phase-banner.luteal{background:linear-gradient(135deg,rgba(155,89,182,0.15),rgba(201,168,76,0.1));border:1px solid rgba(155,89,182,0.25)}
+.phase-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.phase-name{font-family:var(--font-head);font-size:24px;font-weight:700}
+.phase-day{font-size:13px;color:var(--muted);margin-top:3px}
+.phase-emoji{font-size:36px}
+.phase-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.phase-tags{display:flex;gap:8px;flex-wrap:wrap}
+.phase-tag{font-size:12px;padding:4px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);color:var(--muted)}
+
+/* CYCLE WHEEL */
+.cycle-wheel-wrap{display:flex;justify-content:center;margin-bottom:1.5rem}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.tab-btn{font-size:13px;padding:8px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--font-body)}
+.tab-btn:hover{background:rgba(255,255,255,0.05)}
+.tab-btn.active{background:var(--text);color:var(--dark);border-color:var(--text);font-weight:500}
+
+/* CONTENT CARDS */
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.content-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.25rem}
+.content-card.full{grid-column:1/-1}
+.cc-icon{font-size:20px;margin-bottom:8px}
+.cc-title{font-family:var(--font-head);font-size:16px;font-weight:600;margin-bottom:6px}
+.cc-body{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* AI SECTION */
+.ai-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1rem}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
+.ai-icon{font-size:18px}
+.ai-title{font-size:14px;font-weight:500;color:var(--text)}
+.ai-select{width:100%;padding:10px 14px;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;margin-bottom:10px}
+.ai-textarea{width:100%;padding:10px 14px;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;resize:vertical;min-height:70px;line-height:1.5;margin-bottom:10px;display:none}
+.ai-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--rose),var(--moon));color:white;border:none;border-radius:10px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.ai-btn:hover{opacity:.9}
+.ai-btn:disabled{opacity:.4;cursor:not-allowed}
+.ai-output{margin-top:12px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap}
+.ai-loading{color:var(--muted);font-size:13px}
+
+/* GROCERY LIST */
+.grocery-list{list-style:none}
+.grocery-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;cursor:pointer}
+.grocery-item:last-child{border-bottom:none}
+.grocery-item.checked .gi-name{text-decoration:line-through;color:var(--muted)}
+.gi-box{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s}
+.gi-box.checked{background:var(--sage);border-color:var(--sage);color:white}
+.gi-cat{font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,0.05);color:var(--muted);flex-shrink:0}
+
+/* MOOD TRACKER */
+.mood-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.mood-btn{padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-family:var(--font-body);transition:all .15s}
+.mood-btn:hover{border-color:rgba(255,255,255,0.2)}
+.mood-btn.selected{background:rgba(212,83,126,0.2);border-color:var(--rose);color:var(--text)}
+
+/* SYMPTOM TAGS */
+.symptom-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.symptom-tag{padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--muted);cursor:pointer;font-size:12px;font-family:var(--font-body);transition:all .15s}
+.symptom-tag.active{background:rgba(155,89,182,0.2);border-color:var(--lavender);color:var(--text)}
+
+/* PANELS */
+.panel{display:none}
+.panel.active{display:block}
+
+@media(max-width:640px){.app{padding:1rem}.setup-row{grid-template-columns:1fr}.content-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-moon">🌙</div>
+    <div class="gate-logo">Luna <span>Fuel</span></div>
+    <div class="gate-sub">Enter your access password from your purchase receipt.</div>
+    <input class="gate-input" id="gate-input" type="password" placeholder="Enter password..." onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="gate-error" id="gate-error"></div>
+    <button class="gate-btn" onclick="checkPassword()">Enter Luna Fuel →</button>
+    <div class="gate-hint">Need help? <a href="mailto:hello@lunafuel.co">hello@lunafuel.co</a></div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-moon">🌙</div>
+      <div class="logo-text">Luna <span>Fuel</span></div>
+    </div>
+    <div class="header-right">
+      <span class="trial-badge">7-day trial</span>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div class="setup-card" id="setup-card">
+    <div class="setup-title">Tell Luna about your cycle</div>
+    <div class="setup-sub">This lets us show you exactly what phase you're in and personalize everything for your body.</div>
+    <div class="setup-row">
+      <div class="setup-group">
+        <label>First day of last period</label>
+        <input class="setup-input" type="date" id="last-period">
+      </div>
+      <div class="setup-group">
+        <label>Average cycle length</label>
+        <select class="setup-select" id="cycle-length">
+          <option value="25">25 days</option>
+          <option value="26">26 days</option>
+          <option value="27">27 days</option>
+          <option value="28" selected>28 days (avg)</option>
+          <option value="29">29 days</option>
+          <option value="30">30 days</option>
+          <option value="31">31 days</option>
+          <option value="32">32 days</option>
+          <option value="35">35 days</option>
+        </select>
+      </div>
+      <div class="setup-group">
+        <label>Any dietary preference</label>
+        <select class="setup-select" id="diet-pref">
+          <option value="no restrictions">No restrictions</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="gluten free">Gluten free</option>
+          <option value="dairy free">Dairy free</option>
+          <option value="low carb">Low carb</option>
+        </select>
+      </div>
+    </div>
+    <button class="setup-btn" onclick="saveSetup()">Show me my phase →</button>
+  </div>
+
+  <!-- PHASE BANNER -->
+  <div id="phase-banner" style="display:none"></div>
+
+  <!-- CYCLE WHEEL -->
+  <div class="cycle-wheel-wrap" id="wheel-wrap" style="display:none"></div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs" style="display:none">
+    <button class="tab-btn active" onclick="setTab(this,'today')">🌙 Today</button>
+    <button class="tab-btn" onclick="setTab(this,'meals')">🥗 Meal plan</button>
+    <button class="tab-btn" onclick="setTab(this,'workout')">💪 Workout</button>
+    <button class="tab-btn" onclick="setTab(this,'grocery')">🛒 Grocery list</button>
+    <button class="tab-btn" onclick="setTab(this,'symptoms')">💊 Symptoms</button>
+    <button class="tab-btn" onclick="setTab(this,'ai')">✨ Ask Luna</button>
+  </div>
+
+  <!-- TODAY PANEL -->
+  <div class="panel active" id="panel-today">
+    <div class="content-grid" id="today-grid"></div>
+  </div>
+
+  <!-- MEAL PLAN PANEL -->
+  <div class="panel" id="panel-meals">
+    <div class="ai-card">
+      <div class="ai-header"><span class="ai-icon">🥗</span><span class="ai-title">AI Meal Plan for your phase</span></div>
+      <select class="ai-select" id="meal-type">
+        <option value="full day meal plan">Full day meal plan</option>
+        <option value="breakfast ideas">Breakfast ideas only</option>
+        <option value="lunch ideas">Lunch ideas only</option>
+        <option value="dinner ideas">Dinner ideas only</option>
+        <option value="snack ideas">Snack ideas</option>
+        <option value="what to eat right now">What to eat right now</option>
+      </select>
+      <button class="ai-btn" id="meal-btn" onclick="runMealAI()">Generate my meal plan ✨</button>
+      <div class="ai-output" id="meal-output"></div>
+    </div>
+  </div>
+
+  <!-- WORKOUT PANEL -->
+  <div class="panel" id="panel-workout">
+    <div class="ai-card">
+      <div class="ai-header"><span class="ai-icon">💪</span><span class="ai-title">Workout for your phase</span></div>
+      <select class="ai-select" id="workout-type">
+        <option value="full workout">Full workout plan</option>
+        <option value="quick 20 minute workout">Quick 20 min workout</option>
+        <option value="low impact movement">Low impact movement</option>
+        <option value="strength training">Strength training</option>
+        <option value="yoga or stretching">Yoga or stretching</option>
+        <option value="rest day activities">Rest day activities</option>
+      </select>
+      <button class="ai-btn" id="workout-btn" onclick="runWorkoutAI()">Generate my workout ✨</button>
+      <div class="ai-output" id="workout-output"></div>
+    </div>
+  </div>
+
+  <!-- GROCERY PANEL -->
+  <div class="panel" id="panel-grocery">
+    <div class="ai-card">
+      <div class="ai-header"><span class="ai-icon">🛒</span><span class="ai-title">Weekly grocery list for your phase</span></div>
+      <button class="ai-btn" id="grocery-btn" onclick="runGroceryAI()">Generate my grocery list ✨</button>
+      <div class="ai-output" id="grocery-output"></div>
+    </div>
+  </div>
+
+  <!-- SYMPTOMS PANEL -->
+  <div class="panel" id="panel-symptoms">
+    <div class="ai-card">
+      <div class="ai-header"><span class="ai-icon">💊</span><span class="ai-title">How are you feeling today?</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Select all that apply</div>
+      <div class="symptom-row" id="symptom-row">
+        <button class="symptom-tag" onclick="toggleSymptom(this)">😴 Fatigue</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🤕 Cramps</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🌊 Bloating</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">😤 Irritable</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">😰 Anxious</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🤯 Brain fog</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🍫 Cravings</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">😢 Low mood</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🔥 Low libido</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">💤 Insomnia</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">🤢 Nausea</button>
+        <button class="symptom-tag" onclick="toggleSymptom(this)">⚡ High energy</button>
+      </div>
+      <button class="ai-btn" id="symptom-btn" onclick="runSymptomAI()">Get my symptom soother plan ✨</button>
+      <div class="ai-output" id="symptom-output"></div>
+    </div>
+  </div>
+
+  <!-- ASK LUNA PANEL -->
+  <div class="panel" id="panel-ai">
+    <div class="ai-card">
+      <div class="ai-header"><span class="ai-icon">✨</span><span class="ai-title">Ask Luna anything about your cycle</span></div>
+      <select class="ai-select" id="luna-select" onchange="checkCustom()">
+        <option value="">Choose a question or type your own...</option>
+        <option value="Why am I so tired this week and what can I eat to help">Why am I so tired this week?</option>
+        <option value="What foods should I avoid right now based on my phase">What foods should I avoid right now?</option>
+        <option value="Why do I crave sugar before my period and what should I eat instead">Why do I crave sugar before my period?</option>
+        <option value="How can I boost my energy naturally during my cycle">How can I boost my energy naturally?</option>
+        <option value="What supplements are best for my current phase">What supplements are best for my phase?</option>
+        <option value="How do I reduce bloating naturally">How do I reduce bloating naturally?</option>
+        <option value="What is the best time in my cycle to start a new workout routine">Best time to start a new workout routine?</option>
+        <option value="Why do I feel so good during ovulation">Why do I feel so good during ovulation?</option>
+        <option value="custom">Type my own question...</option>
+      </select>
+      <textarea class="ai-textarea" id="luna-custom" placeholder="Ask Luna anything..."></textarea>
+      <button class="ai-btn" id="luna-btn" onclick="runLunaAI()">Ask Luna ✨</button>
+      <div class="ai-output" id="luna-output"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PASSWORD = 'lunafuel2026';
+let userData = {};
+let selectedSymptoms = [];
+
+// ── PHASE DATA ──
+const PHASES = {
+  menstrual: {
+    name: 'Menstrual Phase', emoji: '🌑', days: '1–5',
+    color: 'menstrual', phaseColor: '#D4537E',
+    desc: 'Your body is shedding and renewing. Energy is low and that is completely normal. This is your rest and reflection phase — honor it.',
+    tags: ['Rest is productive', 'Iron-rich foods', 'Gentle movement', 'Self care'],
+    energy: '⚡⚡', mood: '🌊 Introspective', focus: 'Rest & restore',
+    bestFoods: 'Iron-rich foods, dark leafy greens, red meat, lentils, dark chocolate, warming soups',
+    avoidFoods: 'Caffeine, alcohol, salty processed foods, cold raw foods',
+    workout: 'Gentle yoga, stretching, slow walks, rest',
+  },
+  follicular: {
+    name: 'Follicular Phase', emoji: '🌒', days: '6–13',
+    color: 'follicular', phaseColor: '#378ADD',
+    desc: 'Estrogen is rising and you are entering your power phase. Energy, creativity, and motivation are building. This is the best time to start new projects.',
+    tags: ['High energy building', 'Lean proteins', 'Start new things', 'Social energy'],
+    energy: '⚡⚡⚡⚡', mood: '✨ Optimistic', focus: 'Plan & create',
+    bestFoods: 'Lean proteins, fermented foods, eggs, sprouted seeds, fresh vegetables, light salads',
+    avoidFoods: 'Heavy processed foods, excess sugar',
+    workout: 'HIIT, strength training, running, high energy cardio',
+  },
+  ovulation: {
+    name: 'Ovulation Phase', emoji: '🌕', days: '14–16',
+    color: 'ovulation', phaseColor: '#C9A84C',
+    desc: 'Peak estrogen. You are magnetic, confident, and at your absolute best. Your body is designed to shine right now. Lean into it.',
+    tags: ['Peak confidence', 'Anti-inflammatory foods', 'Max performance', 'Social peak'],
+    energy: '⚡⚡⚡⚡⚡', mood: '🔥 Magnetic', focus: 'Perform & connect',
+    bestFoods: 'Anti-inflammatory foods, berries, salmon, avocado, colorful vegetables, raw foods',
+    avoidFoods: 'Processed foods, refined carbs, excess alcohol',
+    workout: 'Peak performance training, heavy lifts, group classes, competitive sports',
+  },
+  luteal: {
+    name: 'Luteal Phase', emoji: '🌘', days: '17–28',
+    color: 'luteal', phaseColor: '#9B59B6',
+    desc: 'Progesterone rises and then falls. Energy starts to slow. Your body is asking for nourishment, warmth, and comfort. Listen to it.',
+    tags: ['Nourish deeply', 'Complex carbs', 'Wind down', 'Inward focus'],
+    energy: '⚡⚡⚡', mood: '🍂 Reflective', focus: 'Nourish & slow down',
+    bestFoods: 'Complex carbs, sweet potatoes, brown rice, magnesium-rich foods, dark chocolate, nuts',
+    avoidFoods: 'Caffeine excess, alcohol, salty snacks, refined sugar',
+    workout: 'Moderate cardio, pilates, swimming, brisk walking, yoga',
+  }
+};
+
+function getPhase(lastPeriodDate, cycleLength){
+  const today = new Date();
+  const last = new Date(lastPeriodDate);
+  const diff = Math.floor((today - last) / (1000*60*60*24));
+  const dayInCycle = (diff % cycleLength) + 1;
+  if(dayInCycle <= 5) return {phase:'menstrual', day:dayInCycle};
+  if(dayInCycle <= 13) return {phase:'follicular', day:dayInCycle};
+  if(dayInCycle <= 16) return {phase:'ovulation', day:dayInCycle};
+  return {phase:'luteal', day:dayInCycle};
+}
+
+function checkPassword(){
+  const input = document.getElementById('gate-input').value.trim().toLowerCase();
+  const error = document.getElementById('gate-error');
+  if(input === PASSWORD){
+    document.getElementById('gate').classList.add('hidden');
+    sessionStorage.setItem('lf_access','granted');
+  } else {
+    error.textContent = 'Incorrect password. Check your receipt email.';
+    document.getElementById('gate-input').value = '';
+    document.getElementById('gate-input').focus();
+  }
+}
+if(sessionStorage.getItem('lf_access') === 'granted') document.getElementById('gate').classList.add('hidden');
+
+// Pre-fill today's date minus a few days as default
+const defaultDate = new Date();
+defaultDate.setDate(defaultDate.getDate() - 3);
+document.getElementById('last-period').value = defaultDate.toISOString().split('T')[0];
+
+function saveSetup(){
+  const lastPeriod = document.getElementById('last-period').value;
+  const cycleLength = parseInt(document.getElementById('cycle-length').value);
+  const dietPref = document.getElementById('diet-pref').value;
+  if(!lastPeriod){ alert('Please enter the first day of your last period.'); return; }
+  userData = { lastPeriod, cycleLength, dietPref };
+  const {phase, day} = getPhase(lastPeriod, cycleLength);
+  userData.phase = phase;
+  userData.day = day;
+  userData.phaseData = PHASES[phase];
+  document.getElementById('setup-card').style.display = 'none';
+  renderPhaseBanner();
+  renderWheel();
+  renderTodayGrid();
+  document.getElementById('phase-banner').style.display = 'block';
+  document.getElementById('wheel-wrap').style.display = 'flex';
+  document.getElementById('tabs').style.display = 'flex';
+}
+
+function renderPhaseBanner(){
+  const p = userData.phaseData;
+  document.getElementById('phase-banner').className = `phase-banner ${userData.phase}`;
+  document.getElementById('phase-banner').innerHTML = `
+    <div class="phase-top">
+      <div>
+        <div class="phase-name" style="color:${p.phaseColor}">${p.name}</div>
+        <div class="phase-day">Day ${userData.day} of your cycle · ${p.days} days typical</div>
+      </div>
+      <div class="phase-emoji">${p.emoji}</div>
+    </div>
+    <div class="phase-desc">${p.desc}</div>
+    <div class="phase-tags">${p.tags.map(t=>`<span class="phase-tag">${t}</span>`).join('')}</div>`;
+}
+
+function renderWheel(){
+  const phases = [
+    {name:'Menstrual',color:'#D4537E',start:0,end:5},
+    {name:'Follicular',color:'#378ADD',start:5,end:13},
+    {name:'Ovulation',color:'#C9A84C',start:13,end:16},
+    {name:'Luteal',color:'#9B59B6',start:16,end:28},
+  ];
+  const total = userData.cycleLength;
+  const cx=120,cy=120,r=90,ir=55;
+  let svg = `<svg width="240" height="240" viewBox="0 0 240 240">`;
+  let angle = -90;
+  phases.forEach(ph=>{
+    const pct = (ph.end - ph.start)/total;
+    const sweep = pct * 360;
+    const start = angle * Math.PI/180;
+    const end = (angle+sweep) * Math.PI/180;
+    const x1=cx+r*Math.cos(start),y1=cy+r*Math.sin(start);
+    const x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end);
+    const xi1=cx+ir*Math.cos(start),yi1=cy+ir*Math.sin(start);
+    const xi2=cx+ir*Math.cos(end),yi2=cy+ir*Math.sin(end);
+    const large = sweep > 180 ? 1 : 0;
+    const isActive = ph.name.toLowerCase() === userData.phase;
+    svg += `<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${xi2},${yi2} A${ir},${ir} 0 ${large} 0 ${xi1},${yi1}" fill="${ph.color}" opacity="${isActive?'1':'0.25'}"/>`;
+    angle += sweep;
+  });
+  // Center text
+  svg += `<text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="'Playfair Display',serif" font-size="13" fill="#F5F0F8" font-weight="600">Day ${userData.day}</text>`;
+  svg += `<text x="${cx}" y="${cy+10}" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#9E97A8">of ${userData.cycleLength}</text>`;
+  svg += `</svg>`;
+  document.getElementById('wheel-wrap').innerHTML = svg;
+}
+
+function renderTodayGrid(){
+  const p = userData.phaseData;
+  document.getElementById('today-grid').innerHTML = `
+    <div class="content-card">
+      <div class="cc-icon">⚡</div>
+      <div class="cc-title">Energy today</div>
+      <div class="cc-body">${p.energy} ${p.focus}<br><br>${p.mood}</div>
+    </div>
+    <div class="content-card">
+      <div class="cc-icon">🥗</div>
+      <div class="cc-title">Best foods right now</div>
+      <div class="cc-body">${p.bestFoods}</div>
+    </div>
+    <div class="content-card">
+      <div class="cc-icon">🚫</div>
+      <div class="cc-title">Avoid today</div>
+      <div class="cc-body">${p.avoidFoods}</div>
+    </div>
+    <div class="content-card">
+      <div class="cc-icon">💪</div>
+      <div class="cc-title">Movement today</div>
+      <div class="cc-body">${p.workout}</div>
+    </div>`;
+}
+
+function setTab(btn, panel){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+panel).classList.add('active');
+}
+
+function toggleSymptom(el){
+  el.classList.toggle('active');
+  const s = el.textContent.trim();
+  if(selectedSymptoms.includes(s)) selectedSymptoms = selectedSymptoms.filter(x=>x!==s);
+  else selectedSymptoms.push(s);
+}
+
+function checkCustom(){
+  const sel = document.getElementById('luna-select');
+  const ta = document.getElementById('luna-custom');
+  ta.style.display = sel.value === 'custom' ? 'block' : 'none';
+}
+
+function getPhaseContext(){
+  if(!userData.phase) return 'unknown phase';
+  return `${userData.phaseData.name} (Day ${userData.day} of cycle, ${userData.cycleLength}-day cycle, dietary preference: ${userData.dietPref || 'no restrictions'})`;
+}
+
+async function callAI(prompt, outputId, btnId, btnText){
+  if(!userData.phase){ alert('Please set up your cycle first.'); return; }
+  const btn = document.getElementById(btnId);
+  const out = document.getElementById(outputId);
+  btn.disabled = true; btn.textContent = 'Luna is thinking...';
+  out.innerHTML = '<span class="ai-loading">✨ Personalizing for your phase...</span>';
+  try{
+    const resp = await fetch('/api/ask',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:`You are Luna, a warm and knowledgeable cycle nutrition and wellness coach. The user is in their ${getPhaseContext()}. Give personalized, specific, actionable advice based on their exact cycle phase. Be warm, supportive, and empowering — never clinical or cold. Use emojis sparingly for warmth. Never ask questions — give complete, ready-to-use answers immediately.`,
+        message: prompt
+      })
+    });
+    const data = await resp.json();
+    out.textContent = data.text || data.error || 'Try again in a moment.';
+  }catch(e){ out.textContent = 'Luna is unavailable right now. Try again in a moment.'; }
+  btn.disabled = false; btn.textContent = btnText;
+}
+
+function runMealAI(){
+  const type = document.getElementById('meal-type').value;
+  callAI(`Give me a ${type} specifically optimized for my current cycle phase. Include specific foods, portions, and why each food supports my body right now. Make it realistic, delicious, and easy to prepare.`, 'meal-output', 'meal-btn', 'Generate my meal plan ✨');
+}
+
+function runWorkoutAI(){
+  const type = document.getElementById('workout-type').value;
+  callAI(`Give me a ${type} specifically designed for my current cycle phase. Include the specific exercises, sets, reps or duration, and why this type of movement is ideal right now. Be specific and ready to follow.`, 'workout-output', 'workout-btn', 'Generate my workout ✨');
+}
+
+function runGroceryAI(){
+  callAI(`Create a complete weekly grocery list optimized for my current cycle phase and dietary preference. Organize by category: Produce, Proteins, Grains, Dairy or Alternatives, Pantry, Extras. Include specific items and approximate quantities for one person for one week. Explain briefly why each category supports my phase.`, 'grocery-output', 'grocery-btn', 'Generate my grocery list ✨');
+}
+
+function runSymptomAI(){
+  if(selectedSymptoms.length === 0){ alert('Please select at least one symptom.'); return; }
+  const symptoms = selectedSymptoms.join(', ');
+  callAI(`I am experiencing these symptoms today: ${symptoms}. Give me a specific symptom soother plan — what to eat, what to drink, what to avoid, and what movement or self care will help. Be specific with foods and remedies. Make me feel supported and give me actionable things I can do right now.`, 'symptom-output', 'symptom-btn', 'Get my symptom soother plan ✨');
+}
+
+function runLunaAI(){
+  const sel = document.getElementById('luna-select');
+  const custom = document.getElementById('luna-custom');
+  const question = sel.value === 'custom' ? custom.value.trim() : sel.value;
+  if(!question){ alert('Please select or type a question.'); return; }
+  callAI(question, 'luna-output', 'luna-btn', 'Ask Luna ✨');
+}
+</script>
+</body>
+</html>
